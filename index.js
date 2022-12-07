@@ -171,6 +171,17 @@ app.post('/signin', async (req, res) => {
         
 })
 
+app.get('/cliImgAsset', async (req, res) => {
+    try {
+        const cliImgAsset = await CliImgAsset.find();
+        res.status(200).json(cliImgAsset)
+    } catch(err) {
+        res.status(404).json({
+            err: err
+        })
+    }
+})
+
 app.post('/cliImgAsset', async (req, res) => {
     const payload = req.body;
     try {
