@@ -82,11 +82,32 @@ app.patch('/student/:id', async (req, res) => {
 app.patch('/allStudent', async (req, res) => {
     const students = await Student.find();
     students.forEach((student) => {
-        student.address.city = student.address.city.search('จังหวัด') != -1 ? student.address.city.substring(7) : student.address.city
+        var newCity = student.address.city.search('จังหวัด') != -1 ? student.address.city.substring(7) : student.address.city
+        Student.findById(student._id, function(err, result) {
+            if (!err) {
+              if (!result){
+                res.status(404).send('User was not found');
+              }
+              else{
+                result.address.id(student.address._id).city = newCity;
+                result.posts.id(req.body._id).text = req.body.text;
+                result.markModified('address'); 
+                result.save(function(saveerr, saveresult) {
+                  if (!saveerr) {
+                    res.status(200).send(saveresult);
+                  } else {
+                    res.status(400).send(saveerr.message);
+                  }
+                });
+              }
+            } else {
+              res.status(400).send(err.message);
+            }
+          })
         // const studentUp = Student.findByIdAndUpdate(student._id, { $set: student });
     })
-    await students.save();
-    res.json(students);
+    // await students.save();
+    // res.json(students);
 });
 
 app.delete('/student/:id', async (req, res) => {
