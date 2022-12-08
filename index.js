@@ -59,16 +59,25 @@ app.post('/student', async (req, res) => {
 app.post('/studentList', async (req, res) => {
     const payload = req.body;
     const students = new Student(payload);
-    Student.collection.insertMany(payload,{ordered : false }, function (err, docs) {
-        if (err){ 
-            res.json({
-                message: err
-            })
-        } else {
-          console.log("Multiple documents inserted to Collection");
-          res.status(201).end();
-        }
-    });
+
+    (async function(){
+
+        const insertMany = await Student.insertMany(payload);
+
+        // console.log(JSON.stringify(insertMany,'','\t'));
+
+        res.status(200).send('Ok');
+    })();
+    // Student.collection.insertMany(payload, function (err, docs) {
+    //     if (err){ 
+    //         res.json({
+    //             message: err
+    //         })
+    //     } else {
+    //       console.log("Multiple documents inserted to Collection");
+    //       res.status(201).end();
+    //     }
+    // });
 })
 
 app.patch('/student/:id', async (req, res) => {
