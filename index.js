@@ -83,7 +83,7 @@ app.patch('/allStudent', async (req, res) => {
     const students = await Student.find();
     students.forEach((student) => {
         var newCity = student.address.city.search('จังหวัด') != -1 ? student.address.city.substring(7) : student.address.city
-        Student.findOneAndUpdate({"_id":student._id}, {$pull:{address:{city:newCity} }})
+        Student.findOneAndUpdate({"_id":student._id}, {$set:{'address.$[elem]city':newCity} })
     })
     res.json(students);
 });
