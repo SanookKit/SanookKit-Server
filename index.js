@@ -80,24 +80,14 @@ app.patch('/student/:id', async (req, res) => {
 });
 
 app.patch('/allStudent', async (req, res) => {
-    const students = await Student.find();
+    var students = await Student.find();
     students.forEach((student) => {
         student.address.city = student.address.city.search('จังหวัด') != -1 ? student.address.city.substring(7) : student.address.city
-    
+        Student.findByIdAndUpdate(id, { $set: student });
         // const studentUp = Student.findByIdAndUpdate(student._id, { $set: student });
     })
-    Student.collection.insertMany(students,{ordered : false }, function (err, docs) {
-        if (err){ 
-            res.json({
-                message: err
-            })
-        } else {
-          console.log("Multiple documents inserted to Collection");
-          res.status(201).end();
-        }
-    });
     // await students.save();
-    // res.json(students);
+    res.json(students);
 });
 
 app.delete('/student/:id', async (req, res) => {
