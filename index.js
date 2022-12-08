@@ -90,7 +90,6 @@ app.patch('/allStudent', async (req, res) => {
               }
               else{
                 result.address.id(student.address._id).city = newCity;
-                result.posts.id(req.body._id).text = req.body.text;
                 result.markModified('address'); 
                 result.save(function(saveerr, saveresult) {
                   if (!saveerr) {
