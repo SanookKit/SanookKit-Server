@@ -11,10 +11,10 @@ const Address = new Schema({
 })
 
 const studentSchema = new Schema({
-  firstname: { type : String , unique : true },
-  surname: { type : String , unique : true },
+  firstname: String,
+  surname: String,
   sex: String,
-  id_card: { type : String , unique : true },
+  id_card: String,
   bag_id:  { type : String , unique : true },
   school: String,
   grade: Number,
