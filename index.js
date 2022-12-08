@@ -67,7 +67,7 @@ app.post('/studentList', async (req, res) => {
             })
         } else {
           console.log("Multiple documents inserted to Collection");
-          res.status(201).end();
+          res.status(201).json(payload);
         }
     });
 })
