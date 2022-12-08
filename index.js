@@ -79,6 +79,15 @@ app.patch('/student/:id', async (req, res) => {
     res.json(student);
 });
 
+app.patch('/allStudent', async (req, res) => {
+    const students = await Student.find();
+    students.forEach((student) => {
+        student.address.city = student.address.city.search('จังหวัด') != -1 ? student.address.city.substring(7) : student.address.city
+        Student.findByIdAndUpdate(student._id, { $set: student });
+    })
+    res.json(students);
+});
+
 app.delete('/student/:id', async (req, res) => {
     const { id } = req.params;
 
