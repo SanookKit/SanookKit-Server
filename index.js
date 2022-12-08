@@ -97,15 +97,18 @@ app.patch('/allStudent', async (req, res) => {
     // })
     // await students.save();
     // res.json(students);
-    const arr = ["1081", "1082", "1083", "1084", "1085", "1086", "1087", "1088", "1089", "1090", "1091", "1092", "1093", "1094", "1095", "1096", "1097", "1098", "1099", "1100"]
-    await Student.updateMany({ _id: { $in: arr } }, {
-        $push: {
-            bizs: {
-                "school": 'โรงเรียนสาธิต มรภ.สุรินทร์'
+    try {
+        const arr = ["1081", "1082", "1083", "1084", "1085", "1086", "1087", "1088", "1089", "1090", "1091", "1092", "1093", "1094", "1095", "1096", "1097", "1098", "1099", "1100"]
+        await Student.updateMany({ _id: { $in: arr } }, {
+            $push: {
+                school: 'โรงเรียนสาธิต มรภ.สุรินทร์'
             }
-        }
-    })
-    res.status(200)
+        })
+        res.status(200)
+    } catch (err) {
+        res.status(403).json(err)
+    }
+    
     // await Student.updateMany({ bag_id: /^M/ }, { $set: { school: 'โรงเรียนสาธิต มรภ.สุรินทร์' } });
 });
 
