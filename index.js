@@ -81,22 +81,30 @@ app.patch('/student/:id', async (req, res) => {
 });
 
 app.patch('/allStudent', async (req, res) => {
-    var students = await Student.find();
-    students.forEach((student) => {
-        if ((parseInt(student.bag_id) >= 1011 && parseInt(student.bag_id) <= 1030) ||
-        (parseInt(student.bag_id) >= 2011 && parseInt(student.bag_id) <= 2030) ||
-        (parseInt(student.bag_id) >= 3018 && parseInt(student.bag_id) <= 3037) ||
-        (parseInt(student.bag_id) >= 4011 && parseInt(student.bag_id) <= 4030) ||
-        (parseInt(student.bag_id) >= 5015 && parseInt(student.bag_id) <= 5034) ||
-        (parseInt(student.bag_id) >= 6011 && parseInt(student.bag_id) <= 6030)) {
-            student.school = "โรงเรียนบ้านดู่"
-            // student.address.city = student.address.city.search('จังหวัด') != -1 ? student.address.city.substring(7) : student.address.city
-            Student.findByIdAndUpdate(student._id, { $set: student });
-        }
-        // const studentUp = Student.findByIdAndUpdate(student._id, { $set: student });
-    })
+    // var students = await Student.find();
+    // students.forEach((student) => {
+    //     if ((parseInt(student.bag_id) >= 1011 && parseInt(student.bag_id) <= 1030) ||
+    //     (parseInt(student.bag_id) >= 2011 && parseInt(student.bag_id) <= 2030) ||
+    //     (parseInt(student.bag_id) >= 3018 && parseInt(student.bag_id) <= 3037) ||
+    //     (parseInt(student.bag_id) >= 4011 && parseInt(student.bag_id) <= 4030) ||
+    //     (parseInt(student.bag_id) >= 5015 && parseInt(student.bag_id) <= 5034) ||
+    //     (parseInt(student.bag_id) >= 6011 && parseInt(student.bag_id) <= 6030)) {
+    //         student.school = "โรงเรียนบ้านดู่"
+    //         // student.address.city = student.address.city.search('จังหวัด') != -1 ? student.address.city.substring(7) : student.address.city
+    //         Student.findByIdAndUpdate(student._id, { $set: student });
+    //     }
+    //     // const studentUp = Student.findByIdAndUpdate(student._id, { $set: student });
+    // })
     // await students.save();
-    res.json(students);
+    // res.json(students);
+    const arr = ["1081", "1082", "1083", "1084", "1085", "1086", "1087", "1088", "1089", "1090", "1091", "1092", "1093", "1094", "1095", "1096", "1097", "1098", "1099", "1100"]
+    await Student.updateMany({ _id: { $in: arr } }, {
+        $push: {
+            school: 'โรงเรียนสาธิต มรภ.สุรินทร์'
+        }
+    })
+    res.status(200)
+    // await Student.updateMany({ bag_id: /^M/ }, { $set: { school: 'โรงเรียนสาธิต มรภ.สุรินทร์' } });
 });
 
 app.delete('/student/:id', async (req, res) => {
