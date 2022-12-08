@@ -82,29 +82,20 @@ app.patch('/student/:id', async (req, res) => {
 app.patch('/allStudent', async (req, res) => {
     const students = await Student.find();
     students.forEach((student) => {
-        var newCity = student.address.city.search('จังหวัด') != -1 ? student.address.city.substring(7) : student.address.city
-        Student.findById(student._id, function(err, result) {
-            if (!err) {
-              if (!result){
-                res.status(404).send('User was not found');
-              }
-              else{
-                result.address.id(student.address._id).city = newCity;
-                result.markModified('address'); 
-                result.save(function(saveerr, saveresult) {
-                  if (!saveerr) {
-                    res.status(200).send(saveresult);
-                  } else {
-                    res.status(400).send(saveerr.message);
-                  }
-                });
-              }
-            } else {
-              res.status(400).send(err.message);
-            }
-          })
+        student.address.city = student.address.city.search('จังหวัด') != -1 ? student.address.city.substring(7) : student.address.city
+    
         // const studentUp = Student.findByIdAndUpdate(student._id, { $set: student });
     })
+    Student.collection.insertMany(students,{ordered : false }, function (err, docs) {
+        if (err){ 
+            res.json({
+                message: err
+            })
+        } else {
+          console.log("Multiple documents inserted to Collection");
+          res.status(201).end();
+        }
+    });
     // await students.save();
     // res.json(students);
 });
