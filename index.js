@@ -60,7 +60,7 @@ app.post('/studentList', async (req, res) => {
     const payload = req.body;
     const students = new Student(payload);
 
-    Student.collection.insertMany(payload, function (err, docs) {
+    Student.insertMany(payload, function (err, docs) {
         if (err){ 
             res.json({
                 message: err
