@@ -83,8 +83,16 @@ app.patch('/student/:id', async (req, res) => {
 app.patch('/allStudent', async (req, res) => {
     var students = await Student.find();
     students.forEach((student) => {
-        student.address.city = student.address.city.search('จังหวัด') != -1 ? student.address.city.substring(7) : student.address.city
-        Student.findByIdAndUpdate(student._id, { $set: student });
+        if ((parseInt(student.bag_id) >= 1011 && parseInt(student.bag_id) <= 1030) ||
+        (parseInt(student.bag_id) >= 2011 && parseInt(student.bag_id) <= 2030) ||
+        (parseInt(student.bag_id) >= 3018 && parseInt(student.bag_id) <= 3037) ||
+        (parseInt(student.bag_id) >= 4011 && parseInt(student.bag_id) <= 4030) ||
+        (parseInt(student.bag_id) >= 5015 && parseInt(student.bag_id) <= 5034) ||
+        (parseInt(student.bag_id) >= 6011 && parseInt(student.bag_id) <= 6030)) {
+            student.school = "โรงเรียนบ้านดู่"
+            // student.address.city = student.address.city.search('จังหวัด') != -1 ? student.address.city.substring(7) : student.address.city
+            Student.findByIdAndUpdate(student._id, { $set: student });
+        }
         // const studentUp = Student.findByIdAndUpdate(student._id, { $set: student });
     })
     // await students.save();
