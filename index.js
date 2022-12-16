@@ -136,6 +136,14 @@ app.post('/learning-resource', async (req, res) => {
     })
 });
 
+app.patch('/learning-resource/:id', async (req, res) => {
+    const payload = req.body;
+    const { id } = req.params;
+
+    const learning = await Learning.findByIdAndUpdate(id, { $set: payload });
+    res.json(learning);
+});
+
 app.delete('/learning-resource/:id', async (req, res) => {
     const { id } = req.params;
     const learningData = await Learning.findById(id)
@@ -232,12 +240,13 @@ app.delete('/cliImgAsset/:id', async (req, res) => {
     const cliImgAssetData = await CliImgAsset.findById(id)
     try {
       await CliImgAsset.findByIdAndDelete(id);  
+      res.json(cliImgAssetData)
     } catch (err) {
         res.json({
             err_message: err
         })
     }
-    res.json(cliImgAssetData)
+    
 });
 
 
